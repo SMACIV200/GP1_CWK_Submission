@@ -91,10 +91,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	// load game fontss
 	// Load Fonts
-	LPCSTR gameFonts[2] = { "Fonts/digital-7.ttf", "Fonts/space age.ttf" };
+	LPCSTR gameFonts[3] = { "Fonts/digital-7.ttf", "Fonts/space age.ttf", "Fonts/Overlock-BlackItalic.ttf" };
 
-	theFontMgr->addFont("SevenSeg", gameFonts[0], 24);
-	theFontMgr->addFont("Space", gameFonts[1], 24);
+	theFontMgr->addFont("SevenSeg", gameFonts[0], 30);
+	theFontMgr->addFont("Space", gameFonts[1], 30);
+	theFontMgr->addFont("OverlockTitle", gameFonts[2], 100);
+	theFontMgr->addFont("Overlock", gameFonts[2], 30);
 
 	// Create vector array of textures
 	vector<cTexture*> textureBkgList;
@@ -145,7 +147,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	playButton.setTextureDimensions(btnTextureList[3]->getTWidth(), btnTextureList[3]->getTHeight());
 
 	string outputMsg;
-	string strMsg[] = { "Break The Targets!","Don't Let Any Through!", "Catapult", "Thanks for playing!","See you again soon!" };
+	string strMsg[] = { "Break The Targets!","Don't Let Any Through!", "Catapult", "Thanks For Playing!","Would You Like To Play Again?" };
 
 	gameState theGameState = MENU;
 	btnTypes theBtnType = EXIT;
@@ -188,8 +190,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		case MENU:
 			spriteStartBkgd.render();
 
-			playButton.setSpritePos(glm::vec2(400.0f, 300.0f));
-			exitButton.setSpritePos(glm::vec2(400.0f, 375.0f));
+			playButton.setSpritePos(glm::vec2(545.0f, 300.0f));
+			exitButton.setSpritePos(glm::vec2(545.0f, 375.0f));
 			playButton.render();
 			exitButton.render();
 
@@ -198,11 +200,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 
 			outputMsg = strMsg[2];
-			theFontMgr->getFont("Space")->printText(outputMsg.c_str(), FTPoint(10, 15, 0.0f));
+			theFontMgr->getFont("OverlockTitle")->printText(outputMsg.c_str(), FTPoint(450, 100, 0.0f));
 			outputMsg = strMsg[0];
-			theFontMgr->getFont("Space")->printText(outputMsg.c_str(), FTPoint(100, 100, 0.0f));
+			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(525, 200, 0.0f));
 			outputMsg = strMsg[1];
-			theFontMgr->getFont("Space")->printText(outputMsg.c_str(), FTPoint(100, 150, 0.0f));
+			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(500, 250, 0.0f));
 			if (exitButton.getClicked())
 			{
 				SendMessage(pgmWNDMgr->getWNDHandle(), WM_CLOSE, NULL, NULL);
@@ -233,9 +235,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 			// render button and reset clicked to false
 
-			outputMsg = strMsg[2];
-			theFontMgr->getFont("Space")->printText(outputMsg.c_str(), FTPoint(10, 15, 0.0f));
-
 			if (bGameOver == true)
 			{
 				theGameState = END;
@@ -249,7 +248,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			}
 
 			outputMsg = to_string(spawnTimer);
-			theFontMgr->getFont("Space")->printText(outputMsg.c_str(), FTPoint(900, 15, 0.0f));
+			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(900, 15, 0.0f));
 
 			break;
 		case END:
@@ -258,20 +257,18 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			playButton.setClicked(false);
 			exitButton.setClicked(false);
 
-			playButton.setSpritePos(glm::vec2(400.0f, 300.0f));
-			exitButton.setSpritePos(glm::vec2(400.0f, 375.0f));
+			playButton.setSpritePos(glm::vec2(545.0f, 300.0f));
+			exitButton.setSpritePos(glm::vec2(545.0f, 375.0f));
 			playButton.render();
 			exitButton.render();
 
 			theGameState = playButton.update(theGameState, PLAYING);
 			exitButton.update(elapsedTime);
 
-			outputMsg = strMsg[2];
-			theFontMgr->getFont("Space")->printText(outputMsg.c_str(), FTPoint(10, 15, 0.0f));
 			outputMsg = strMsg[3];
-			theFontMgr->getFont("Space")->printText(outputMsg.c_str(), FTPoint(100, 100, 0.0f));
+			theFontMgr->getFont("OverlockTitle")->printText(outputMsg.c_str(), FTPoint(220, 100, 0.0f));
 			outputMsg = strMsg[4];
-			theFontMgr->getFont("Space")->printText(outputMsg.c_str(), FTPoint(100, 150, 0.0f));
+			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(450, 225, 0.0f));
 			if (exitButton.getClicked())
 			{
 				SendMessage(pgmWNDMgr->getWNDHandle(), WM_CLOSE, NULL, NULL);
