@@ -244,6 +244,15 @@ void cSprite::setBoundingRect(RECT* pRect)
 	theBoundingRect.bottom = textureHeight + sPos.y;
 
 	SetRect(pRect, (int)theBoundingRect.left, (int)theBoundingRect.top, (int)theBoundingRect.right, (int)theBoundingRect.bottom);
+
+	glm::vec2 Position(-10.0f, 384.0f);
+	RECT theFailZone;
+	theFailZone.left = -20.0f;
+	theFailZone.top = 0.0f;
+	theFailZone.right = 0.0f;
+	theFailZone.bottom = 768.0f;
+
+	SetRect(pRect, (int)theFailZone.left, (int)theFailZone.top, (int)theFailZone.right, (int)theFailZone.bottom);
 }
 /*
 =================

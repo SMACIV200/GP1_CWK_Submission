@@ -25,6 +25,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
     const int windowWidth = 1280;
     const int windowHeight = 768;
     const int windowBPP = 16;
+	int currentWave;
+	int finalWave;
+	bool bContinueWave;
 
 	void spawnTargets(int numberToSpawn, int wndWidth);
 
@@ -147,7 +150,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	playButton.setTextureDimensions(btnTextureList[3]->getTWidth(), btnTextureList[3]->getTHeight());
 
 	string outputMsg;
-	string strMsg[] = { "Break The Targets!","Don't Let Any Through!", "Catapult", "Thanks For Playing!","Would You Like To Play Again?" };
+	string strMsg[] = { "Break The Targets!","Don't Let Any Through!", "Catapult", "Thanks For Playing!","Would You Like To Play Again?", "Game Over!", "Try Again?" };
 
 	gameState theGameState = MENU;
 	btnTypes theBtnType = EXIT;
@@ -188,6 +191,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		switch (theGameState)
 		{
 		case MENU:
+
 			spriteStartBkgd.render();
 
 			playButton.setSpritePos(glm::vec2(545.0f, 300.0f));
@@ -211,6 +215,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			}
 			break;
 		case PLAYING:
+
+			currentWave = 0;
+			finalWave = 6;
+			bContinueWave = true;
+
 			spriteBkgd.render();
 
 			catapultSprite.update(elapsedTime);
@@ -237,21 +246,31 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 			if (bGameOver == true)
 			{
-				theGameState = END;
+				theGameState = ENDWIN;
 			}
 			
 			spawnTimer += elapsedTime;
-			if (spawnTimer > 2)
+
+			if (currentWave = finalWave)
 			{
-				spawnTargets(spawnNumber, windowWidth);
-				spawnTimer = 0;
+				bContinueWave = false;
 			}
+
+			while (bContinueWave = true)
+			{
+				if (spawnTimer > 2)
+				{
+					spawnTargets(spawnNumber, windowWidth);
+					spawnTimer = 0;
+					currentWave++;
+				}
+			} 
 
 			outputMsg = to_string(spawnTimer);
 			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(900, 15, 0.0f));
-
+		
 			break;
-		case END:
+		case ENDWIN:
 			spriteEndBkgd.render();
 
 			playButton.setClicked(false);
@@ -268,6 +287,35 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			outputMsg = strMsg[3];
 			theFontMgr->getFont("OverlockTitle")->printText(outputMsg.c_str(), FTPoint(220, 100, 0.0f));
 			outputMsg = strMsg[4];
+			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(450, 225, 0.0f));
+			if (exitButton.getClicked())
+			{
+				SendMessage(pgmWNDMgr->getWNDHandle(), WM_CLOSE, NULL, NULL);
+			}
+			if (theGameState == PLAYING)
+			{
+				bGameOver = false;
+				spawnTargets(spawnNumber, windowWidth);
+				theRocks.clear();
+			}
+			break;
+		case ENDFAIL:
+			spriteEndBkgd.render();
+
+			playButton.setClicked(false);
+			exitButton.setClicked(false);
+
+			playButton.setSpritePos(glm::vec2(545.0f, 300.0f));
+			exitButton.setSpritePos(glm::vec2(545.0f, 375.0f));
+			playButton.render();
+			exitButton.render();
+
+			theGameState = playButton.update(theGameState, PLAYING);
+			exitButton.update(elapsedTime);
+
+			outputMsg = strMsg[6];
+			theFontMgr->getFont("OverlockTitle")->printText(outputMsg.c_str(), FTPoint(220, 100, 0.0f));
+			outputMsg = strMsg[7];
 			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(450, 225, 0.0f));
 			if (exitButton.getClicked())
 			{
