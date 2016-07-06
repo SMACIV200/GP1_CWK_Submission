@@ -41,23 +41,8 @@ Update the sprite position
 
 void cRock::update(float deltaTime)
 {
-
-	//glm::vec2 spriteVelocityAdd = glm::vec2(0.0f, 0.0f);
-	//spriteVelocityAdd.x = (glm::sin(glm::radians(spriteRotation)));
-	//spriteVelocityAdd.y = -(glm::cos(glm::radians(spriteRotation)));
-
-	//spriteVelocityAdd *= spriteTranslation;
-
-	//rockVelocity += spriteVelocityAdd;
-
-	//glm::vec2 centrePos = getSpriteCentre();
-	//spritePos2D.x -= centrePos.x;
-	//spritePos2D.y += centrePos.y;
 	
 	spritePos2D += spriteTranslation * deltaTime;
-
-	/*rockVelocity *= 0.95;*/
-
 	setBoundingRect(&boundingRect);
 
 }

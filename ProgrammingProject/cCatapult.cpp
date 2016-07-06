@@ -41,14 +41,6 @@ Update the sprite position
 
 void cCatapult::update(float deltaTime)
 {
-	/*if (m_InputMgr->isKeyDown(VK_RIGHT))
-	{
-		spriteRotation += 5.0f;
-	}
-	if (m_InputMgr->isKeyDown(VK_LEFT))
-	{
-		spriteRotation -= 5.0f;
-	}*/
 	if (m_InputMgr->isKeyDown(VK_UP))
 	{
 		spritePos2D -= spriteTranslation;
@@ -57,15 +49,6 @@ void cCatapult::update(float deltaTime)
 	{
 		spritePos2D += spriteTranslation;
 	}
-	//if (m_InputMgr->isKeyDown(int('A')))
-	//{
-	//	spriteScaling += 0.2f;
-	//}
-	//if (m_InputMgr->isKeyDown(int('S')))
-	//{
-	//	spriteScaling -= 0.2f;
-	//}
-
 	if (m_InputMgr->isKeyDown(VK_SPACE))
 	{
 		// Add new rock sprite to the vector array
@@ -83,24 +66,6 @@ void cCatapult::update(float deltaTime)
 		// play the firing sound
 		m_SoundMgr->getSnd("Shot")->playAudio(AL_TRUE);
 	}
-
-	//if (spriteRotation > 360)
-	//{
-	//	spriteRotation -= 360.0f;
-	//}
-
-	//glm::vec2 spriteVelocityAdd = glm::vec2(0.0f, 0.0f);
-	//spriteVelocityAdd.x = (glm::sin(glm::radians(spriteRotation)));
-	//spriteVelocityAdd.y = -(glm::cos(glm::radians(spriteRotation)));
-
-	//spriteVelocityAdd *= spriteTranslation;
-
-	//catapultVelocity += spriteVelocityAdd;
-
-	///*spritePos2D += spriteTranslation * deltaTime;*/
-
-	//catapultVelocity *= 0.95;
-
 	/*
 	==============================================================
 	| Check for collisions
@@ -141,6 +106,7 @@ void cCatapult::update(float deltaTime)
 	vector<cTarget*>::iterator targetIterartor = theTargets.begin();
 	while (targetIterartor != theTargets.end())
 	{
+		// Win state
 		if ((*targetIterartor)->isActive() == false)
 		{
 			targetIterartor = theTargets.erase(targetIterartor);

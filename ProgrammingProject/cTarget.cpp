@@ -54,6 +54,26 @@ void cTarget::update(float deltaTime)
 
 	setBoundingRect(&boundingRect);
 }
+gameState cTarget::update(float deltaTime, gameState aGameState)
+{
+	gameState tGameState = aGameState;
+	spriteRotation += 2.0f * deltaTime;
+	if (spriteRotation > 360)
+	{
+		spriteRotation -= 360.0f;
+	}
+
+	spritePos2D += spriteTranslation * deltaTime;
+
+	setBoundingRect(&boundingRect);
+
+	//Fail state
+	if (spritePos2D.x < 200)
+	{
+		tGameState = ENDFAIL;
+	}
+	return tGameState;
+}
 /*
 =================================================================
   Sets the velocity for the Target

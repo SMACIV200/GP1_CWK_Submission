@@ -177,6 +177,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	catapultSprite.attachSoundMgr(theSoundMgr);
 
 	float spawnTimer = 0;
+	currentWave = 0;
+	finalWave = 6;
 
     //This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -216,8 +218,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			break;
 		case PLAYING:
 
-			currentWave = 0;
-			finalWave = 6;
 			bContinueWave = true;
 
 			spriteBkgd.render();
@@ -233,7 +233,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 					}
 					else
 					{
-						(*targetIterator)->update(elapsedTime);
+						theGameState = (*targetIterator)->update(elapsedTime, theGameState);
 						(*targetIterator)->render();
 						++targetIterator;
 					}
@@ -244,6 +244,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 			// render button and reset clicked to false
 
+
 			if (bGameOver == true)
 			{
 				theGameState = ENDWIN;
@@ -251,23 +252,24 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			
 			spawnTimer += elapsedTime;
 
-			if (currentWave = finalWave)
+			// Stops spawning waves once six waves have spawned
+			if (currentWave == finalWave)
 			{
 				bContinueWave = false;
 			}
 
-			while (bContinueWave = true)
+			if (bContinueWave == true)
 			{
-				if (spawnTimer > 2)
+				if (spawnTimer > 5)
 				{
 					spawnTargets(spawnNumber, windowWidth);
 					spawnTimer = 0;
 					currentWave++;
 				}
 			} 
-
-			outputMsg = to_string(spawnTimer);
-			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(900, 15, 0.0f));
+			
+			//outputMsg = to_string(spawnTimer);
+			//theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(900, 15, 0.0f));
 		
 			break;
 		case ENDWIN:
@@ -294,9 +296,14 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			}
 			if (theGameState == PLAYING)
 			{
+				// If the player chooses to play again, the game resets itself
 				bGameOver = false;
+				theTargets.clear();
 				spawnTargets(spawnNumber, windowWidth);
 				theRocks.clear();
+				currentWave = 0;
+				finalWave = 6;
+				spawnTimer = 0;
 			}
 			break;
 		case ENDFAIL:
@@ -313,19 +320,24 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			theGameState = playButton.update(theGameState, PLAYING);
 			exitButton.update(elapsedTime);
 
+			outputMsg = strMsg[5];
+			theFontMgr->getFont("OverlockTitle")->printText(outputMsg.c_str(), FTPoint(390, 100, 0.0f));
 			outputMsg = strMsg[6];
-			theFontMgr->getFont("OverlockTitle")->printText(outputMsg.c_str(), FTPoint(220, 100, 0.0f));
-			outputMsg = strMsg[7];
-			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(450, 225, 0.0f));
+			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(575, 225, 0.0f));
 			if (exitButton.getClicked())
 			{
 				SendMessage(pgmWNDMgr->getWNDHandle(), WM_CLOSE, NULL, NULL);
 			}
 			if (theGameState == PLAYING)
 			{
+				// If the player chooses to play again, the game resets itself
 				bGameOver = false;
+				theTargets.clear();
 				spawnTargets(spawnNumber, windowWidth);
 				theRocks.clear();
+				currentWave = 0;
+				finalWave = 6;
+				spawnTimer = 0;
 			}
 			break;
 		}
@@ -356,8 +368,7 @@ void spawnTargets(int numberToSpawn, int wndWidth)
 	{
 		theTargets.push_back(new cTarget);
 		theTargets[targ]->setSpritePos(glm::vec2(wndWidth, 200 + (150 * targNum)));
-		theTargets[targ]->setSpriteTranslation(glm::vec2(-(rand() % 5 + 1) * 15, 0));
-		//int randTarget = rand() % 4;
+		theTargets[targ]->setSpriteTranslation(glm::vec2(-(rand() % 5 + 1) * 50, 0));
 		theTargets[targ]->setTexture(theGameTextures[0]->getTexture());
 		theTargets[targ]->setTextureDimensions(theGameTextures[0]->getTWidth(), theGameTextures[0]->getTHeight());
 		theTargets[targ]->setSpriteCentre();
