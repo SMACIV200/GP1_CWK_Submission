@@ -211,6 +211,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(525, 200, 0.0f));
 			outputMsg = strMsg[1];
 			theFontMgr->getFont("Overlock")->printText(outputMsg.c_str(), FTPoint(500, 250, 0.0f));
+			
 			if (exitButton.getClicked())
 			{
 				SendMessage(pgmWNDMgr->getWNDHandle(), WM_CLOSE, NULL, NULL);
@@ -252,7 +253,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			
 			spawnTimer += elapsedTime;
 
-			// Stops spawning waves once six waves have spawned
+			// Stops spawning waves once seven waves have spawned
 			if (currentWave == finalWave)
 			{
 				bContinueWave = false;

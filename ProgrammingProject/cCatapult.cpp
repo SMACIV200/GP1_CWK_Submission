@@ -78,7 +78,7 @@ void cCatapult::update(float deltaTime)
 		{
 			if ((*targetIterator)->collidedWith((*targetIterator)->getBoundingRect(), (*rockIterartor)->getBoundingRect()))
 			{
-				// if a collision set the bullet and asteroid to false
+				// if a collision set the rock and target to false
 				(*targetIterator)->setActive(false);
 				(*rockIterartor)->setActive(false);
 			}
